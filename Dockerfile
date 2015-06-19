@@ -35,6 +35,7 @@ RUN sed -i 's/^[[:space:]]*group.*/group:         files ldap/g' /etc/nsswitch.co
 RUN sed -i 's/^[[:space:]]*shadow.*/shadow:         files ldap/g' /etc/nsswitch.conf
 
 RUN mkdir -p /home/gitolite/repositories
+RUN mkdir /var/run/sshd
 
 ADD ./init.sh /init
 
