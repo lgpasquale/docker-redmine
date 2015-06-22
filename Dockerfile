@@ -21,6 +21,7 @@ ADD ./sites-available/redmine-ssl.conf /etc/apache2/sites-available/redmine-ssl.
 RUN ln -s /usr/share/redmine/public /var/www/html/redmine
 
 RUN a2enmod passenger
+RUN a2enmod ssl
 RUN for f in /etc/apache2/sites-available/*default*; do a2dissite $(echo ${f##/etc/apache2/sites-available/} | sed 's/.conf//g'); done
 RUN a2ensite redmine
 RUN a2ensite redmine-ssl
