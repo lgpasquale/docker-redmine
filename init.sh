@@ -1,5 +1,11 @@
 #!/bin/sh
 
+[ $(getent group gitolite) ] || groupadd gitolite
+if [ -n "${GITOLITE_GID}" ]; then
+    groupmod -g ${GITOLITE_GID} gitolite
+fi
+usermod -a -G gitolite www-data
+
 sed -i "s/\([[:space:]]*host:\).*/\1 ${MYSQL_PORT_3306_TCP_ADDR}/g" /etc/redmine/default/database.yml
 sed -i "s/\([[:space:]]*port:\).*/\1 ${MYSQL_PORT_3306_TCP_PORT}/g" /etc/redmine/default/database.yml
 
