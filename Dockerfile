@@ -41,7 +41,7 @@ RUN mkdir /var/run/sshd
 ADD ./init.sh /init
 
 RUN chmod +x /init
-ENTRYPOINT ["/init", "/usr/sbin/sshd", "-D"]
+ENTRYPOINT ["/init"]
 
 EXPOSE 22
 EXPOSE 80

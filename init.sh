@@ -17,8 +17,6 @@ if [ -z "${REDMINE_SERVER_ALIAS}" ]; then
     sed -i "s/\([[:space:]]*ServerAlias\).*/\1 ${REDMINE_SERVER_ALIAS}/g" /etc/apache2/sites-available/redmine-ssl.conf
 fi
 
-service apache2 start
+/usr/sbin/apache2ctl -D FOREGROUND
 
-echo "Executing $*"
-exec $*
 
