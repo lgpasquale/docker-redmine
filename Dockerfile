@@ -1,11 +1,10 @@
-FROM debian:latest
+FROM debian:stable
 
 MAINTAINER Luca Pasquale
 
 RUN apt-get update
 
 RUN apt-get -y install sudo
-RUN apt-get -y install openssh-server
 RUN apt-get -y install libnss-ldap
 RUN apt-get -y install debconf-utils
 RUN export DEBIAN_FRONTEND=noninteractive; echo "redmine redmine/instances/default/dbconfig-install  boolean false" | debconf-set-selections; \
@@ -26,11 +25,6 @@ RUN for f in /etc/apache2/sites-available/*default*; do a2dissite $(echo ${f##/e
 RUN a2ensite redmine
 RUN a2ensite redmine-ssl
 
-# To avoid annoying "perl: warning: Setting locale failed." errors,
-# do not allow the client to pass custom locals, see:
-# http://stackoverflow.com/a/2510548/15677
-RUN sed -i 's/^AcceptEnv LANG LC_\*$//g' /etc/ssh/sshd_config
-
 RUN sed -i 's/^[[:space:]]*passwd.*/passwd:         files ldap/g' /etc/nsswitch.conf
 RUN sed -i 's/^[[:space:]]*group.*/group:         files ldap/g' /etc/nsswitch.conf
 RUN sed -i 's/^[[:space:]]*shadow.*/shadow:         files ldap/g' /etc/nsswitch.conf
@@ -43,6 +37,5 @@ ADD ./init.sh /init
 RUN chmod +x /init
 ENTRYPOINT ["/init"]
 
-EXPOSE 22
 EXPOSE 80
 EXPOSE 443
